@@ -41,7 +41,7 @@ Add your own `.wav` or `.mp3` files to any sound folder (`done/`, `ready/`, `wor
 
 All audio assets are property of their respective owners and included here for personal, non-commercial use.
 
-- [Warcraft](https://warcraft.blizzard.com/) by Blizzard Entertainment
+- [Warcraft](https://www.blizzard.com) by Blizzard Entertainment
 - [Dota 2 Bastion Announcer Pack](https://liquipedia.net/dota2/Bastion_Announcer_Pack) by Supergiant Games
 
 ## License
