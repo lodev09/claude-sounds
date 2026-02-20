@@ -31,12 +31,12 @@ This adds hooks to `~/.claude/settings.json` and installs the `claude-sounds` CL
 ## Usage
 
 ```sh
-claude-sounds                       # interactively toggle characters
-claude-sounds enable <character>    # enable a character
-claude-sounds disable <character>   # disable a character
-claude-sounds enable all            # enable all characters
-claude-sounds update                # pull latest sounds from repo
-claude-sounds uninstall             # remove claude-sounds
+claude-sounds                         # interactively toggle characters
+claude-sounds --enable <character>    # enable a character
+claude-sounds --disable <character>   # disable a character
+claude-sounds --enable all            # enable all characters
+claude-sounds --update                # pull latest sounds from repo
+claude-sounds --uninstall             # remove claude-sounds
 ```
 
 ## Customization
