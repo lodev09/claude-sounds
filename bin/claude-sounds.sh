@@ -11,9 +11,9 @@ GREEN='\033[32m'
 RED='\033[31m'
 RESET='\033[0m'
 
-info() { printf " ${GREEN}✓${RESET} %s\n" "$1"; }
+info() { printf "${GREEN}✓${RESET} %s\n" "$1"; }
 dim() { printf "${DIM}%s${RESET}\n" "$1"; }
-err() { printf " ${RED}✗${RESET} %s\n" "$1"; }
+err() { printf "${RED}✗${RESET} %s\n" "$1"; }
 
 cmd_uninstall() {
   dim "Uninstalling claude-sounds..."
@@ -82,8 +82,8 @@ cmd_update() {
 
 # Handle uninstall/update before source validation
 case "${1:-}" in
-  --uninstall) cmd_uninstall; exit 0 ;;
-  --update)    cmd_update; exit 0 ;;
+  uninstall) cmd_uninstall; exit 0 ;;
+  update)    cmd_update; exit 0 ;;
 esac
 
 if [ ! -f "$SOURCE_FILE" ]; then
@@ -204,7 +204,7 @@ cmd_select() {
 cmd_enable() {
   local char="$1"
   if [ -z "$char" ]; then
-    err "Usage: claude-sounds --enable <character|all>"
+    err "Usage: claude-sounds enable <character|all>"
     exit 1
   fi
 
@@ -237,7 +237,7 @@ cmd_enable() {
 cmd_disable() {
   local char="$1"
   if [ -z "$char" ]; then
-    err "Usage: claude-sounds --disable <character|all>"
+    err "Usage: claude-sounds disable <character|all>"
     exit 1
   fi
 
@@ -270,27 +270,27 @@ cmd_list() {
 }
 
 cmd_help() {
-  printf "Usage: ${DIM}claude-sounds${RESET} [options]\n"
+  printf "Usage: ${DIM}claude-sounds${RESET} [command]\n"
   echo ""
-  printf "${DIM}Options:${RESET}\n"
+  printf "${DIM}Commands:${RESET}\n"
   echo "  (no args)                  Interactive character select"
-  echo "  --list                     List characters and status"
-  echo "  --enable <character|all>   Enable a character's sounds"
-  echo "  --disable <character|all>  Disable a character's sounds"
-  echo "  --update                   Pull latest sounds from repo"
-  echo "  --uninstall                Uninstall claude-sounds"
+  echo "  list                       List characters and status"
+  echo "  enable <character|all>     Enable a character's sounds"
+  echo "  disable <character|all>    Disable a character's sounds"
+  echo "  update                     Pull latest sounds from repo"
+  echo "  uninstall                  Uninstall claude-sounds"
   echo "  --help                     Show this help"
   echo ""
   printf "${DIM}Characters:${RESET} $(get_available | tr '\n' ' ')\n"
 }
 
 case "${1:-select}" in
-  select)      cmd_select ;;
-  --list)      cmd_list ;;
-  --enable)    cmd_enable "${2:-}" ;;
-  --disable)   cmd_disable "${2:-}" ;;
-  --help)      cmd_help ;;
-  --update)    cmd_update ;;
-  --uninstall) cmd_uninstall ;;
-  *)           cmd_help; exit 1 ;;
+  select)    cmd_select ;;
+  list)      cmd_list ;;
+  enable)    cmd_enable "${2:-}" ;;
+  disable)   cmd_disable "${2:-}" ;;
+  --help)    cmd_help ;;
+  update)    cmd_update ;;
+  uninstall) cmd_uninstall ;;
+  *)         cmd_help; exit 1 ;;
 esac

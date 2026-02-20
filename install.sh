@@ -70,14 +70,26 @@ else
   python3 -c "
 import json, sys
 
+SOUNDS_PREFIX = '~/.claude/sounds/play.sh'
+
 with open('$SETTINGS') as f:
     settings = json.load(f)
 
 hooks = json.loads('''$HOOKS_JSON''')
 existing = settings.get('hooks', {})
 
-for event, value in hooks.items():
-    existing[event] = value
+for event, new_entries in hooks.items():
+    current = existing.get(event, [])
+    # Remove any previous claude-sounds hook entries
+    current = [
+        entry for entry in current
+        if not any(
+            h.get('command', '').startswith(SOUNDS_PREFIX)
+            for h in entry.get('hooks', [])
+        )
+    ]
+    current.extend(new_entries)
+    existing[event] = current
 
 settings['hooks'] = existing
 
