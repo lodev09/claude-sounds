@@ -26,8 +26,7 @@ for char in enabled:
 
 [ -z "$files" ] && exit 0
 
-mapfile -t arr <<< "$files"
 existing=()
-for f in "${arr[@]}"; do [[ -f "$f" ]] && existing+=("$f"); done
+while IFS= read -r f; do [[ -f "$f" ]] && existing+=("$f"); done <<< "$files"
 [[ ${#existing[@]} -eq 0 ]] && exit 0
 afplay -v 0.25 "${existing[RANDOM % ${#existing[@]}]}" &
