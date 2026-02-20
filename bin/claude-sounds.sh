@@ -99,7 +99,7 @@ if [ ! -d "$SOURCE/sounds" ]; then
 fi
 
 get_available() {
-  for f in "$SOURCE"/sounds/*/sounds.json; do
+  for f in "$SOURCE"/sounds/*/source.json; do
     [ -f "$f" ] && basename "$(dirname "$f")"
   done | sort
 }
@@ -118,7 +118,7 @@ cmd_select() {
   done < <(get_available)
 
   if [ "$count" -eq 0 ]; then
-    echo "No characters found."
+    echo "No sound sources found."
     exit 1
   fi
 
@@ -195,7 +195,7 @@ cmd_select() {
   done
 
   if [ -z "$selected" ]; then
-    printf '\033[2mNo characters enabled\033[0m\n'
+    printf '\033[2mNo sound sources enabled\033[0m\n'
   else
     printf '\033[32mEnabled:\033[0m%s\n' "$selected"
   fi
@@ -204,7 +204,7 @@ cmd_select() {
 cmd_enable() {
   local char="$1"
   if [ -z "$char" ]; then
-    err "Usage: claude-sounds enable <character|all>"
+    err "Usage: claude-sounds enable <source|all>"
     exit 1
   fi
 
@@ -213,12 +213,12 @@ cmd_enable() {
 
   if [ "$char" = "all" ]; then
     echo "$available" > "$ENABLED_FILE"
-    info "Enabled all characters"
+    info "Enabled all sound sources"
     return
   fi
 
   if ! echo "$available" | grep -qx "$char"; then
-    err "Unknown character: $char"
+    err "Unknown sound source: $char"
     dim "Available: $(echo "$available" | tr '\n' ' ')"
     exit 1
   fi
@@ -237,13 +237,13 @@ cmd_enable() {
 cmd_disable() {
   local char="$1"
   if [ -z "$char" ]; then
-    err "Usage: claude-sounds disable <character|all>"
+    err "Usage: claude-sounds disable <source|all>"
     exit 1
   fi
 
   if [ "$char" = "all" ]; then
     > "$ENABLED_FILE"
-    info "Disabled all characters"
+    info "Disabled all sound sources"
     return
   fi
 
@@ -273,15 +273,15 @@ cmd_help() {
   printf "Usage: ${DIM}claude-sounds${RESET} [command]\n"
   echo ""
   printf "${DIM}Commands:${RESET}\n"
-  echo "  (no args)                  Interactive character select"
-  echo "  list                       List characters and status"
-  echo "  enable <character|all>     Enable a character's sounds"
-  echo "  disable <character|all>    Disable a character's sounds"
+  echo "  (no args)                  Interactive source select"
+  echo "  list                       List sources and status"
+  echo "  enable <source|all>        Enable a sound source"
+  echo "  disable <source|all>       Disable a sound source"
   echo "  update                     Pull latest sounds from repo"
   echo "  uninstall                  Uninstall claude-sounds"
   echo "  --help                     Show this help"
   echo ""
-  printf "${DIM}Characters:${RESET} $(get_available | tr '\n' ' ')\n"
+  printf "${DIM}Sources:${RESET} $(get_available | tr '\n' ' ')\n"
 }
 
 case "${1:-select}" in

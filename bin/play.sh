@@ -15,7 +15,7 @@ source = '$SOURCE'
 event = '$EVENT'
 enabled = '''$ENABLED'''.strip().splitlines()
 for char in enabled:
-    path = os.path.join(source, 'sounds', char, 'sounds.json')
+    path = os.path.join(source, 'sounds', char, 'source.json')
     if not os.path.isfile(path):
         continue
     with open(path) as f:

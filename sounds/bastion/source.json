@@ -1,0 +1,17 @@
+{
+  "ready": [
+    "good to have you back.mp3",
+    "morning sunshine.mp3",
+    "why hello hello.mp3"
+  ],
+  "work": [
+    "better get ready.mp3",
+    "much obliged.mp3",
+    "now we're talking.mp3"
+  ],
+  "done": [
+    "alright carry on.mp3",
+    "that was some fine work.mp3",
+    "you're up.mp3"
+  ]
+}

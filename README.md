@@ -10,7 +10,7 @@ Sound feedback for [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
 | `UserPromptSubmit` | `work` | Acknowledgment when you send a prompt |
 | `Stop` | `done` | Notification when Claude finishes |
 
-Each event plays a random sound from enabled characters, mapped via `sounds.json`.
+Each event plays a random sound from enabled sources, mapped via `source.json`.
 
 ## Install
 
@@ -31,22 +31,22 @@ This adds hooks to `~/.claude/settings.json` and installs the `claude-sounds` CL
 ## Usage
 
 ```sh
-claude-sounds                        # interactively toggle characters
-claude-sounds enable <character>     # enable a character
-claude-sounds disable <character>    # disable a character
-claude-sounds enable all             # enable all characters
-claude-sounds list                   # list characters and status
+claude-sounds                        # interactively toggle sources
+claude-sounds enable <source>        # enable a source
+claude-sounds disable <source>       # disable a source
+claude-sounds enable all             # enable all sources
+claude-sounds list                   # list sources and status
 claude-sounds update                 # pull latest sounds from repo
 claude-sounds uninstall              # remove claude-sounds
 ```
 
 ## Customization
 
-Create a new folder under `sounds/` with a `sounds.json` mapping events to audio files:
+Create a new folder under `sounds/` with a `source.json` mapping events to audio files:
 
 ```
-sounds/my-character/
-├── sounds.json
+sounds/my-source/
+├── source.json
 ├── hello.mp3
 └── done.wav
 ```

@@ -36,9 +36,9 @@ cp "$REPO_DIR/bin/play.sh" "$DEST/play.sh"
 cp "$REPO_DIR/bin/claude-sounds.sh" "$DEST/claude-sounds.sh"
 chmod +x "$DEST/play.sh" "$DEST/claude-sounds.sh"
 
-# Store source path and enable all characters
+# Store source path and enable all sources
 echo "$REPO_DIR" > "$DEST/.source"
-for f in "$REPO_DIR"/sounds/*/sounds.json; do
+for f in "$REPO_DIR"/sounds/*/source.json; do
   [ -f "$f" ] && basename "$(dirname "$f")"
 done | sort > "$DEST/.enabled"
 
