@@ -15,23 +15,21 @@ info() { printf "${GREEN}✓${RESET} %s\n" "$1"; }
 dim() { printf "${DIM}%s${RESET}\n" "$1"; }
 err() { printf "${RED}✗${RESET} %s\n" "$1"; }
 
-cmd_uninstall() {
-  dim "Uninstalling claude-sounds..."
-
+uninstall_files() {
   rm -rf "$DEST"
   rm -rf "$HOME/.claude/sounds-repo"
 
-  # Remove shell alias
   for rcfile in "$HOME/.zshrc" "$HOME/.bashrc"; do
     if [ -f "$rcfile" ] && grep -qF 'alias claude-sounds=' "$rcfile"; then
       sed -i.bak '/# claude-sounds/d;/alias claude-sounds=/d' "$rcfile"
       rm -f "$rcfile.bak"
-      info "Removed alias from $(basename "$rcfile")"
     fi
   done
+}
 
-  if [ -f "$SETTINGS" ]; then
-    python3 -c "
+uninstall_hooks() {
+  [ -f "$SETTINGS" ] || return 0
+  python3 -c "
 import json
 
 with open('$SETTINGS') as f:
@@ -54,10 +52,50 @@ with open('$SETTINGS', 'w') as f:
     json.dump(settings, f, indent=2)
     f.write('\n')
 "
-    info "Removed hooks from settings.json"
+}
+
+cmd_uninstall() {
+  spin "Removing files" uninstall_files
+  spin "Removing hooks" uninstall_hooks
+  info "claude-sounds uninstalled"
+}
+
+spinner_pid=""
+
+spin() {
+  local msg="$1"
+  shift
+  local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+  local error_file
+  error_file=$(mktemp)
+
+  (
+    while true; do
+      for frame in "${frames[@]}"; do
+        printf "\r${DIM}%s${RESET} %s" "$frame" "$msg"
+        sleep 0.08
+      done
+    done
+  ) &
+  spinner_pid=$!
+
+  "$@" >"$error_file" 2>&1
+  local exit_code=$?
+
+  kill $spinner_pid 2>/dev/null
+  wait $spinner_pid 2>/dev/null
+  spinner_pid=""
+
+  if [ $exit_code -eq 0 ]; then
+    printf "\r${GREEN}✓${RESET} %s\n" "$msg"
+  else
+    printf "\r${RED}✗${RESET} %s\n" "$msg"
+    [ -s "$error_file" ] && dim "$(cat "$error_file")"
+    rm -f "$error_file"
+    exit 1
   fi
 
-  info "claude-sounds uninstalled"
+  rm -f "$error_file"
 }
 
 cmd_update() {
@@ -75,9 +113,7 @@ cmd_update() {
     exit 1
   fi
 
-  dim "Updating claude-sounds..."
-  git -C "$source" pull --ff-only
-  info "Updated"
+  spin "Updating claude-sounds" git -C "$source" pull --ff-only
 }
 
 # Handle uninstall/update before source validation
@@ -262,9 +298,9 @@ cmd_list() {
 
   for char in $available; do
     if echo "$enabled" | grep -qx "$char"; then
-      printf "\033[32m✓\033[0m %s\n" "$char"
+      printf "%s \033[32m✓\033[0m\n" "$char"
     else
-      printf "\033[2m  %s\033[0m\n" "$char"
+      printf "\033[2m%s\033[0m\n" "$char"
     fi
   done
 }
