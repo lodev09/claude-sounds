@@ -39,11 +39,11 @@ spin() {
   ) &
   spinner_pid=$!
 
-  "$@" >"$error_file" 2>&1
-  local exit_code=$?
+  local exit_code=0
+  "$@" >"$error_file" 2>&1 || exit_code=$?
 
-  kill $spinner_pid 2>/dev/null
-  wait $spinner_pid 2>/dev/null
+  kill $spinner_pid 2>/dev/null || true
+  wait $spinner_pid 2>/dev/null || true
   spinner_pid=""
 
   if [ $exit_code -eq 0 ]; then
