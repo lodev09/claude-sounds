@@ -166,10 +166,10 @@ cmd_select() {
       fi
     done
 
-    IFS= read -rsn1 key
+    IFS= read -rsn1 key </dev/tty
     case "$key" in
       $'\x1b')
-        read -rsn2 -t 0.1 key || true
+        read -rsn2 -t 0.1 key </dev/tty || true
         case "$key" in
           '[A') [ "$cursor" -gt 0 ] && cursor=$((cursor - 1)) ;;
           '[B') [ "$cursor" -lt $((count - 1)) ] && cursor=$((cursor + 1)) ;;
