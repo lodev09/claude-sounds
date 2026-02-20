@@ -14,47 +14,38 @@ if [ -n "${BASH_SOURCE[0]:-}" ] && [ "${BASH_SOURCE[0]}" != "bash" ]; then
   fi
 fi
 
-DIM='\033[2m'
-GREEN='\033[32m'
-RESET='\033[0m'
+source "$(dirname "${BASH_SOURCE[0]}")/bin/spin.sh"
 
-if [ -n "$SCRIPT_DIR" ]; then
-  REPO_DIR="$SCRIPT_DIR"
-else
-  REPO_DIR="$HOME/.claude/sounds-repo"
-  printf "${DIM}Cloning claude-sounds...${RESET}\n"
+clone_repo() {
   rm -rf "$REPO_DIR"
   git clone --depth 1 "$REPO_URL" "$REPO_DIR"
-fi
+}
 
-printf "${DIM}Installing claude-sounds...${RESET}\n"
+install_files() {
+  rm -rf "$DEST"
+  mkdir -p "$DEST"
+  cp "$REPO_DIR/bin/play.sh" "$DEST/play.sh"
+  cp "$REPO_DIR/bin/claude-sounds.sh" "$DEST/claude-sounds.sh"
+  cp "$REPO_DIR/bin/spin.sh" "$DEST/spin.sh"
+  chmod +x "$DEST/play.sh" "$DEST/claude-sounds.sh"
 
-# Set up sounds directory
-rm -rf "$DEST"
-mkdir -p "$DEST"
-cp "$REPO_DIR/bin/play.sh" "$DEST/play.sh"
-cp "$REPO_DIR/bin/claude-sounds.sh" "$DEST/claude-sounds.sh"
-chmod +x "$DEST/play.sh" "$DEST/claude-sounds.sh"
+  echo "$REPO_DIR" > "$DEST/.source"
+  for f in "$REPO_DIR"/sounds/*/source.json; do
+    [ -f "$f" ] && basename "$(dirname "$f")"
+  done | sort > "$DEST/.enabled"
 
-# Store source path and enable all sources
-echo "$REPO_DIR" > "$DEST/.source"
-for f in "$REPO_DIR"/sounds/*/source.json; do
-  [ -f "$f" ] && basename "$(dirname "$f")"
-done | sort > "$DEST/.enabled"
+  ALIAS_LINE='alias claude-sounds="bash ~/.claude/sounds/claude-sounds.sh"'
+  for rcfile in "$HOME/.zshrc" "$HOME/.bashrc"; do
+    if [ -f "$rcfile" ] && [ -w "$rcfile" ] && ! grep -qF 'alias claude-sounds=' "$rcfile"; then
+      echo "" >> "$rcfile"
+      echo "# claude-sounds" >> "$rcfile"
+      echo "$ALIAS_LINE" >> "$rcfile"
+    fi
+  done
+}
 
-# Add shell alias
-ALIAS_LINE='alias claude-sounds="bash ~/.claude/sounds/claude-sounds.sh"'
-for rcfile in "$HOME/.zshrc" "$HOME/.bashrc"; do
-  if [ -f "$rcfile" ] && [ -w "$rcfile" ] && ! grep -qF 'alias claude-sounds=' "$rcfile"; then
-    echo "" >> "$rcfile"
-    echo "# claude-sounds" >> "$rcfile"
-    echo "$ALIAS_LINE" >> "$rcfile"
-    printf " ${GREEN}✓${RESET} Added alias to $(basename "$rcfile")\n"
-  fi
-done
-
-# Define hooks to inject
-HOOKS_JSON=$(cat <<'HOOKS'
+install_hooks() {
+  HOOKS_JSON=$(cat <<'HOOKS'
 {
   "SessionStart": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh ready", "async": true}]}],
   "Stop": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh done", "async": true}]}],
@@ -63,11 +54,10 @@ HOOKS_JSON=$(cat <<'HOOKS'
 HOOKS
 )
 
-# Merge hooks into settings.json
-if [ ! -f "$SETTINGS" ]; then
-  echo "{\"hooks\": $HOOKS_JSON}" | python3 -m json.tool > "$SETTINGS"
-else
-  python3 -c "
+  if [ ! -f "$SETTINGS" ]; then
+    echo "{\"hooks\": $HOOKS_JSON}" | python3 -m json.tool > "$SETTINGS"
+  else
+    python3 -c "
 import json, sys
 
 SOUNDS_PREFIX = '~/.claude/sounds/play.sh'
@@ -80,7 +70,6 @@ existing = settings.get('hooks', {})
 
 for event, new_entries in hooks.items():
     current = existing.get(event, [])
-    # Remove any previous claude-sounds hook entries
     current = [
         entry for entry in current
         if not any(
@@ -97,10 +86,19 @@ with open('$SETTINGS', 'w') as f:
     json.dump(settings, f, indent=2)
     f.write('\n')
 "
+  fi
+}
+
+if [ -n "$SCRIPT_DIR" ]; then
+  REPO_DIR="$SCRIPT_DIR"
+else
+  REPO_DIR="$HOME/.claude/sounds-repo"
+  spin "Cloning claude-sounds" clone_repo
 fi
 
-printf "\n ${GREEN}✓${RESET} Sounds installed to ${DIM}$DEST${RESET}\n"
-printf " ${GREEN}✓${RESET} Hooks added to ${DIM}$SETTINGS${RESET}\n"
+spin "Installing sounds" install_files
+spin "Configuring hooks" install_hooks
+
 printf "\n${DIM}Hooks:${RESET}\n"
 printf " SessionStart     ${DIM}→${RESET} ready\n"
 printf " UserPromptSubmit ${DIM}→${RESET} work\n"

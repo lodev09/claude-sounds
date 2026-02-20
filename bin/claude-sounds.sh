@@ -6,14 +6,7 @@ SOURCE_FILE="$DEST/.source"
 ENABLED_FILE="$DEST/.enabled"
 SETTINGS="$HOME/.claude/settings.json"
 
-DIM='\033[2m'
-GREEN='\033[32m'
-RED='\033[31m'
-RESET='\033[0m'
-
-info() { printf "${GREEN}✓${RESET} %s\n" "$1"; }
-dim() { printf "${DIM}%s${RESET}\n" "$1"; }
-err() { printf "${RED}✗${RESET} %s\n" "$1"; }
+source "$(dirname "${BASH_SOURCE[0]}")/spin.sh"
 
 uninstall_files() {
   rm -rf "$DEST"
@@ -58,44 +51,6 @@ cmd_uninstall() {
   spin "Removing files" uninstall_files
   spin "Removing hooks" uninstall_hooks
   info "claude-sounds uninstalled"
-}
-
-spinner_pid=""
-
-spin() {
-  local msg="$1"
-  shift
-  local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
-  local error_file
-  error_file=$(mktemp)
-
-  (
-    while true; do
-      for frame in "${frames[@]}"; do
-        printf "\r${DIM}%s${RESET} %s" "$frame" "$msg"
-        sleep 0.08
-      done
-    done
-  ) &
-  spinner_pid=$!
-
-  "$@" >"$error_file" 2>&1
-  local exit_code=$?
-
-  kill $spinner_pid 2>/dev/null
-  wait $spinner_pid 2>/dev/null
-  spinner_pid=""
-
-  if [ $exit_code -eq 0 ]; then
-    printf "\r${GREEN}✓${RESET} %s\n" "$msg"
-  else
-    printf "\r${RED}✗${RESET} %s\n" "$msg"
-    [ -s "$error_file" ] && dim "$(cat "$error_file")"
-    rm -f "$error_file"
-    exit 1
-  fi
-
-  rm -f "$error_file"
 }
 
 cmd_update() {
