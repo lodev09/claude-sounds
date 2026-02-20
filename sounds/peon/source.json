@@ -1,0 +1,16 @@
+{
+  "ready": [
+    "yes?.wav",
+    "ready to work.wav",
+    "what you want?.wav"
+  ],
+  "work": [
+    "work work.wav",
+    "i can do that.wav",
+    "okie dokie.wav"
+  ],
+  "done": [
+    "okay.wav",
+    "ready to work.wav"
+  ]
+}

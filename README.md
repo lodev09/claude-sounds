@@ -14,7 +14,7 @@ Each event plays a random sound from enabled sources, mapped via `source.json`.
 
 ## Available Sources
 
-- [**orc**](sounds/orc/) — Warcraft Orc Peon
+- [**peon**](sounds/peon/) — Warcraft Orc Peon
 - [**peasant**](sounds/peasant/) — Warcraft Human Peasant
 - [**bastion**](sounds/bastion/) — Dota 2 Bastion Announcer Pack
 - [**ra2**](sounds/ra2/) — Command & Conquer: Red Alert 2
