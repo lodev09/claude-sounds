@@ -12,6 +12,13 @@ Sound feedback for [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
 
 Each event plays a random sound from enabled sources, mapped via `source.json`.
 
+## Available Sources
+
+- [**orc**](sounds/orc/) — Warcraft Orc Peon
+- [**peasant**](sounds/peasant/) — Warcraft Human Peasant
+- [**bastion**](sounds/bastion/) — Dota 2 Bastion Announcer Pack
+- [**ra2**](sounds/ra2/) — Command & Conquer: Red Alert 2
+
 ## Install
 
 ```sh
@@ -72,6 +79,7 @@ All audio assets are property of their respective owners and included here for p
 
 - [Warcraft](https://www.blizzard.com) by Blizzard Entertainment
 - [Dota 2 Bastion Announcer Pack](https://liquipedia.net/dota2/Bastion_Announcer_Pack) by Supergiant Games
+- [Command & Conquer: Red Alert 2](https://www.ea.com/games/command-and-conquer) by Westwood Studios / EA
 
 ## License
 
