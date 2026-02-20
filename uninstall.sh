@@ -4,10 +4,16 @@ set -e
 DEST="$HOME/.claude/sounds"
 SETTINGS="$HOME/.claude/settings.json"
 
+BIN="$HOME/.local/bin/claude-sounds"
+
 echo "Uninstalling claude-sounds..."
 
-# Remove sound files
+# Remove sound files and cloned repo
 rm -rf "$DEST"
+rm -rf "$HOME/.claude/sounds-repo"
+
+# Remove CLI
+rm -f "$BIN"
 
 # Remove hooks from settings.json
 if [ -f "$SETTINGS" ]; then

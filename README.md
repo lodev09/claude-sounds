@@ -6,13 +6,19 @@ Sound feedback for [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
 
 | Event | Sound | Description |
 |-------|-------|-------------|
-| `SessionStart` | `ready/` | Greeting when Claude starts |
-| `UserPromptSubmit` | `work/` | Acknowledgment when you send a prompt |
-| `Stop` | `done/` | Notification when Claude finishes |
+| `SessionStart` | `ready` | Greeting when Claude starts |
+| `UserPromptSubmit` | `work` | Acknowledgment when you send a prompt |
+| `Stop` | `done` | Notification when Claude finishes |
 
-Each event plays a random sound from its folder.
+Each event plays a random sound from enabled characters, mapped via `sounds.json`.
 
 ## Install
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/lodev09/claude-sounds/main/install.sh | bash
+```
+
+Or clone and install locally:
 
 ```sh
 git clone https://github.com/lodev09/claude-sounds.git
@@ -20,17 +26,43 @@ cd claude-sounds
 ./install.sh
 ```
 
-This copies sounds to `~/.claude/sounds/` and adds hooks to `~/.claude/settings.json`.
+This adds hooks to `~/.claude/settings.json` and installs the `claude-sounds` CLI to `~/.local/bin/`.
+
+## Usage
+
+```sh
+claude-sounds list              # show available characters
+claude-sounds enable bastion    # enable a character
+claude-sounds disable orc       # disable a character
+claude-sounds enable all        # enable all characters
+```
 
 ## Uninstall
 
 ```sh
-./uninstall.sh
+claude-sounds uninstall
 ```
 
 ## Customization
 
-Add your own `.wav` or `.mp3` files to any sound folder (`done/`, `ready/`, `work/`), then re-run `./install.sh`.
+Create a new folder under `sounds/` with a `sounds.json` mapping events to audio files:
+
+```
+sounds/my-character/
+├── sounds.json
+├── hello.mp3
+└── done.wav
+```
+
+```json
+{
+  "ready": ["hello.mp3"],
+  "work": ["hello.mp3"],
+  "done": ["done.wav"]
+}
+```
+
+Then re-run `./install.sh`.
 
 ## Requirements
 
