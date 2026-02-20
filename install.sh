@@ -14,16 +14,20 @@ if [ -n "${BASH_SOURCE[0]:-}" ] && [ "${BASH_SOURCE[0]}" != "bash" ]; then
   fi
 fi
 
+DIM='\033[2m'
+GREEN='\033[32m'
+RESET='\033[0m'
+
 if [ -n "$SCRIPT_DIR" ]; then
   REPO_DIR="$SCRIPT_DIR"
 else
   REPO_DIR="$HOME/.claude/sounds-repo"
-  echo "Cloning claude-sounds..."
+  printf "${DIM}Cloning claude-sounds...${RESET}\n"
   rm -rf "$REPO_DIR"
   git clone --depth 1 "$REPO_URL" "$REPO_DIR"
 fi
 
-echo "Installing claude-sounds..."
+printf "${DIM}Installing claude-sounds...${RESET}\n"
 
 # Set up sounds directory
 rm -rf "$DEST"
@@ -45,7 +49,7 @@ for rcfile in "$HOME/.zshrc" "$HOME/.bashrc"; do
     echo "" >> "$rcfile"
     echo "# claude-sounds" >> "$rcfile"
     echo "$ALIAS_LINE" >> "$rcfile"
-    echo "Added claude-sounds alias to $(basename "$rcfile")"
+    printf " ${GREEN}✓${RESET} Added alias to $(basename "$rcfile")\n"
   fi
 done
 
@@ -83,18 +87,12 @@ with open('$SETTINGS', 'w') as f:
 "
 fi
 
-echo ""
-echo "Sounds installed to $DEST"
-echo "Hooks added to $SETTINGS"
-echo ""
-echo "Sounds will play on:"
-echo "  SessionStart     → ready (greeting)"
-echo "  UserPromptSubmit → work (acknowledged)"
-echo "  Stop             → done (task complete)"
-echo ""
-echo "Manage characters:"
-echo "  claude-sounds list"
-echo "  claude-sounds enable bastion"
-echo "  claude-sounds disable orc"
-echo ""
-echo "To uninstall, run: claude-sounds uninstall"
+printf "\n ${GREEN}✓${RESET} Sounds installed to ${DIM}$DEST${RESET}\n"
+printf " ${GREEN}✓${RESET} Hooks added to ${DIM}$SETTINGS${RESET}\n"
+printf "\n${DIM}Hooks:${RESET}\n"
+printf " SessionStart     ${DIM}→${RESET} ready\n"
+printf " UserPromptSubmit ${DIM}→${RESET} work\n"
+printf " Stop             ${DIM}→${RESET} done\n"
+printf "\n${DIM}To uninstall: claude-sounds uninstall${RESET}\n\n"
+
+bash "$DEST/claude-sounds.sh" select

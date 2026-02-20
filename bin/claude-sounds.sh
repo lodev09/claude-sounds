@@ -6,8 +6,17 @@ SOURCE_FILE="$DEST/.source"
 ENABLED_FILE="$DEST/.enabled"
 SETTINGS="$HOME/.claude/settings.json"
 
+DIM='\033[2m'
+GREEN='\033[32m'
+RED='\033[31m'
+RESET='\033[0m'
+
+info() { printf " ${GREEN}✓${RESET} %s\n" "$1"; }
+dim() { printf "${DIM}%s${RESET}\n" "$1"; }
+err() { printf " ${RED}✗${RESET} %s\n" "$1"; }
+
 cmd_uninstall() {
-  echo "Uninstalling claude-sounds..."
+  dim "Uninstalling claude-sounds..."
 
   rm -rf "$DEST"
   rm -rf "$HOME/.claude/sounds-repo"
@@ -17,6 +26,7 @@ cmd_uninstall() {
     if [ -f "$rcfile" ] && grep -qF 'alias claude-sounds=' "$rcfile"; then
       sed -i.bak '/# claude-sounds/d;/alias claude-sounds=/d' "$rcfile"
       rm -f "$rcfile.bak"
+      info "Removed alias from $(basename "$rcfile")"
     fi
   done
 
@@ -44,15 +54,15 @@ with open('$SETTINGS', 'w') as f:
     json.dump(settings, f, indent=2)
     f.write('\n')
 "
-    echo "Hooks removed from $SETTINGS"
+    info "Removed hooks from settings.json"
   fi
 
-  echo "claude-sounds uninstalled."
+  info "claude-sounds uninstalled"
 }
 
 cmd_update() {
   if [ ! -f "$SOURCE_FILE" ]; then
-    echo "claude-sounds is not installed. Run install.sh first."
+    err "Not installed. Run install.sh first."
     exit 1
   fi
 
@@ -60,14 +70,14 @@ cmd_update() {
   source="$(cat "$SOURCE_FILE")"
 
   if [ ! -d "$source/.git" ]; then
-    echo "Source is not a git repo: $source"
-    echo "Re-run install.sh to reinstall."
+    err "Source is not a git repo: $source"
+    dim "Re-run install.sh to reinstall."
     exit 1
   fi
 
-  echo "Updating claude-sounds..."
+  dim "Updating claude-sounds..."
   git -C "$source" pull --ff-only
-  echo "Updated. New characters (if any) can be enabled with: claude-sounds enable all"
+  info "Updated"
 }
 
 # Handle uninstall/update before source validation
@@ -77,14 +87,14 @@ case "${1:-}" in
 esac
 
 if [ ! -f "$SOURCE_FILE" ]; then
-  echo "claude-sounds is not installed. Run install.sh first."
+  err "Not installed. Run install.sh first."
   exit 1
 fi
 
 SOURCE="$(cat "$SOURCE_FILE")"
 if [ ! -d "$SOURCE/sounds" ]; then
-  echo "Source not found: $SOURCE"
-  echo "Re-run install.sh from the cloned repo."
+  err "Source not found: $SOURCE"
+  dim "Re-run install.sh from the cloned repo."
   exit 1
 fi
 
@@ -98,10 +108,103 @@ get_enabled() {
   [ -f "$ENABLED_FILE" ] && cat "$ENABLED_FILE" || true
 }
 
+cmd_select() {
+  local enabled cursor=0 count=0 i
+
+  # Read items into indexed vars (bash 3.2 compat)
+  while IFS= read -r line; do
+    eval "items_$count=\$line"
+    count=$((count + 1))
+  done < <(get_available)
+
+  if [ "$count" -eq 0 ]; then
+    echo "No characters found."
+    exit 1
+  fi
+
+  enabled=$(get_enabled)
+  for i in $(seq 0 $((count - 1))); do
+    eval "name=\$items_$i"
+    if echo "$enabled" | grep -qx "$name"; then
+      eval "flags_$i=1"
+    else
+      eval "flags_$i=0"
+    fi
+  done
+
+  cleanup() { printf '\033[?25h'; }
+  trap cleanup EXIT
+  trap 'cleanup; exit 130' INT
+
+  printf '\033[?25l'
+
+  # Reserve space
+  printf '\n'
+  for i in $(seq 0 $((count - 1))); do
+    printf '\n'
+  done
+
+  local total_lines=$((count + 1))
+
+  while true; do
+    printf '\033[%dA' "$total_lines"
+
+    printf '\033[2K\033[2mUse arrows to move, space to toggle, enter to confirm\033[0m\r\n'
+    for i in $(seq 0 $((count - 1))); do
+      eval "name=\$items_$i"
+      eval "flag=\$flags_$i"
+      printf '\033[2K'
+      if [ "$flag" -eq 1 ]; then
+        local check="\033[32m●\033[0m"
+      else
+        local check="\033[2m○\033[0m"
+      fi
+      if [ "$i" -eq "$cursor" ]; then
+        printf ' %b %s\r\n' "$check" "$name"
+      else
+        printf ' %b \033[2m%s\033[0m\r\n' "$check" "$name"
+      fi
+    done
+
+    IFS= read -rsn1 key
+    case "$key" in
+      $'\x1b')
+        read -rsn2 -t 0.1 key || true
+        case "$key" in
+          '[A') [ "$cursor" -gt 0 ] && cursor=$((cursor - 1)) ;;
+          '[B') [ "$cursor" -lt $((count - 1)) ] && cursor=$((cursor + 1)) ;;
+        esac ;;
+      ' ')
+        eval "flag=\$flags_$cursor"
+        eval "flags_$cursor=$(( 1 - flag ))" ;;
+      '') break ;;
+    esac
+  done
+
+  printf '\033[?25h'
+
+  : > "$ENABLED_FILE"
+  local selected=""
+  for i in $(seq 0 $((count - 1))); do
+    eval "flag=\$flags_$i"
+    eval "name=\$items_$i"
+    if [ "$flag" -eq 1 ]; then
+      echo "$name" >> "$ENABLED_FILE"
+      selected="$selected $name"
+    fi
+  done
+
+  if [ -z "$selected" ]; then
+    printf '\033[2mNo characters enabled\033[0m\n'
+  else
+    printf '\033[32mEnabled:\033[0m%s\n' "$selected"
+  fi
+}
+
 cmd_enable() {
   local char="$1"
   if [ -z "$char" ]; then
-    echo "Usage: claude-sounds enable <character|all>"
+    err "Usage: claude-sounds enable <character|all>"
     exit 1
   fi
 
@@ -110,37 +213,37 @@ cmd_enable() {
 
   if [ "$char" = "all" ]; then
     echo "$available" > "$ENABLED_FILE"
-    echo "Enabled all characters"
+    info "Enabled all characters"
     return
   fi
 
   if ! echo "$available" | grep -qx "$char"; then
-    echo "Unknown character: $char"
-    echo "Available: $(echo "$available" | tr '\n' ' ')"
+    err "Unknown character: $char"
+    dim "Available: $(echo "$available" | tr '\n' ' ')"
     exit 1
   fi
 
   local enabled
   enabled=$(get_enabled)
   if echo "$enabled" | grep -qx "$char"; then
-    echo "Already enabled: $char"
+    dim "Already enabled: $char"
     return
   fi
 
   echo "$char" >> "$ENABLED_FILE"
-  echo "Enabled: $char"
+  info "Enabled: $char"
 }
 
 cmd_disable() {
   local char="$1"
   if [ -z "$char" ]; then
-    echo "Usage: claude-sounds disable <character|all>"
+    err "Usage: claude-sounds disable <character|all>"
     exit 1
   fi
 
   if [ "$char" = "all" ]; then
     > "$ENABLED_FILE"
-    echo "Disabled all characters"
+    info "Disabled all characters"
     return
   fi
 
@@ -149,42 +252,27 @@ cmd_disable() {
     tmp=$(grep -vx "$char" "$ENABLED_FILE" || true)
     echo "$tmp" > "$ENABLED_FILE"
   fi
-  echo "Disabled: $char"
-}
-
-cmd_list() {
-  local available enabled
-  available=$(get_available)
-  enabled=$(get_enabled)
-
-  echo "Characters:"
-  for char in $available; do
-    if echo "$enabled" | grep -qx "$char"; then
-      echo "  $char ✓"
-    else
-      echo "  $char"
-    fi
-  done
+  info "Disabled: $char"
 }
 
 cmd_help() {
-  echo "Usage: claude-sounds <command> [character]"
+  printf "Usage: ${DIM}claude-sounds${RESET} [command]\n"
   echo ""
-  echo "Commands:"
+  printf "${DIM}Commands:${RESET}\n"
+  echo "  (no args)                Interactive character select"
   echo "  enable <character|all>   Enable a character's sounds"
   echo "  disable <character|all>  Disable a character's sounds"
-  echo "  list                     Show available characters"
   echo "  update                   Pull latest sounds from repo"
   echo "  uninstall                Uninstall claude-sounds"
   echo "  help                     Show this help"
   echo ""
-  echo "Characters: $(get_available | tr '\n' ' ')"
+  printf "${DIM}Characters:${RESET} $(get_available | tr '\n' ' ')\n"
 }
 
-case "${1:-help}" in
-  enable)  cmd_enable "$2" ;;
-  disable) cmd_disable "$2" ;;
-  list)    cmd_list ;;
-  help)    cmd_help ;;
-  *)       cmd_help; exit 1 ;;
+case "${1:-select}" in
+  select)    cmd_select ;;
+  enable)    cmd_enable "${2:-}" ;;
+  disable)   cmd_disable "${2:-}" ;;
+  help)      cmd_help ;;
+  *)         cmd_help; exit 1 ;;
 esac
