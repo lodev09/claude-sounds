@@ -27,7 +27,7 @@ with open('$SETTINGS') as f:
     settings = json.load(f)
 
 hooks = settings.get('hooks', {})
-for event in ['SessionStart', 'Stop', 'UserPromptSubmit']:
+for event in ['SessionStart', 'Stop', 'UserPromptSubmit', 'SubagentStart', 'PreToolUse', 'PostToolUse']:
     entries = hooks.get(event, [])
     hooks[event] = [e for e in entries if not any(
         h.get('command', '').startswith('~/.claude/sounds/')
