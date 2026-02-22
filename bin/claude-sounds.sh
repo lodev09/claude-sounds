@@ -68,7 +68,14 @@ cmd_update() {
     exit 1
   fi
 
-  spin "Updating claude-sounds" git -C "$source" pull --ff-only
+  spin "Pulling latest" git -C "$source" pull --ff-only
+
+  local dest="$HOME/.claude/sounds"
+  cp "$source/bin/play.sh" "$dest/play.sh"
+  cp "$source/bin/claude-sounds.sh" "$dest/claude-sounds.sh"
+  cp "$source/bin/spin.sh" "$dest/spin.sh"
+  chmod +x "$dest/play.sh" "$dest/claude-sounds.sh"
+  info "Scripts updated"
 }
 
 # Handle uninstall/update before source validation
