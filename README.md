@@ -47,6 +47,7 @@ claude-sounds disable <source>       # disable a source
 claude-sounds enable all             # enable all sources
 claude-sounds sounds                 # list sources and status
 claude-sounds sounds <source>        # show sounds for a source
+claude-sounds status                 # show install info
 claude-sounds update                 # pull latest sounds from repo
 claude-sounds uninstall              # remove claude-sounds
 ```
