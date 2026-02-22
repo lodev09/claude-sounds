@@ -246,6 +246,31 @@ cmd_disable() {
   info "Disabled: $char"
 }
 
+cmd_sounds() {
+  local name="$1"
+  if [ -z "$name" ]; then
+    err "Usage: claude-sounds sounds <source>"
+    exit 1
+  fi
+
+  local source_json="$SOURCE/sounds/$name/source.json"
+  if [ ! -f "$source_json" ]; then
+    err "Unknown source: $name"
+    dim "Available: $(get_available | tr '\n' ' ')"
+    exit 1
+  fi
+
+  printf "${BOLD}%s${RESET}\n" "$name"
+  python3 -c "
+import json
+with open('$source_json') as f:
+    data = json.load(f)
+for event, files in data.items():
+    names = ', '.join('\"' + f.rsplit('.', 1)[0] + '\"' for f in files)
+    print(f'  \033[2m{event}\033[0m  {names}')
+"
+}
+
 cmd_list() {
   local available enabled
   available=$(get_available)
@@ -266,6 +291,7 @@ cmd_help() {
   printf "${DIM}Commands:${RESET}\n"
   echo "  (no args)                  Interactive source select"
   echo "  list                       List sources and status"
+  echo "  sounds <source>            Show sounds for a source"
   echo "  enable <source|all>        Enable a sound source"
   echo "  disable <source|all>       Disable a sound source"
   echo "  update                     Pull latest sounds from repo"
@@ -278,6 +304,7 @@ cmd_help() {
 case "${1:-select}" in
   select)    cmd_select ;;
   list)      cmd_list ;;
+  sounds)    cmd_sounds "${2:-}" ;;
   enable)    cmd_enable "${2:-}" ;;
   disable)   cmd_disable "${2:-}" ;;
   --help)    cmd_help ;;
