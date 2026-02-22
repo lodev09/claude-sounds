@@ -14,8 +14,6 @@ if [ -n "${BASH_SOURCE[0]:-}" ] && [ "${BASH_SOURCE[0]}" != "bash" ]; then
   fi
 fi
 
-source "$(dirname "${BASH_SOURCE[0]}")/bin/spin.sh"
-
 clone_repo() {
   rm -rf "$REPO_DIR"
   git clone --depth 1 "$REPO_URL" "$REPO_DIR"
@@ -96,8 +94,11 @@ if [ -n "$SCRIPT_DIR" ]; then
   REPO_DIR="$SCRIPT_DIR"
 else
   REPO_DIR="$HOME/.claude/sounds-repo"
-  spin "Cloning claude-sounds" clone_repo
+  printf '\033[2mCloning claude-sounds...\033[0m\n'
+  clone_repo >/dev/null 2>&1
 fi
+
+source "$REPO_DIR/bin/spin.sh"
 
 spin "Installing sounds" install_files
 spin "Configuring hooks" install_hooks
