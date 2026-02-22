@@ -8,6 +8,9 @@ Sound feedback for [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
 |-------|-------|-------------|
 | `SessionStart` | `ready` | Greeting when Claude starts |
 | `UserPromptSubmit` | `work` | Acknowledgment when you send a prompt |
+| `SubagentStart` | `work` | Sound when a subagent is spawned |
+| `EnterPlanMode` | `work` | Sound when plan mode is entered |
+| `ExitPlanMode` | `done` | Sound when plan mode is exited |
 | `Stop` | `done` | Notification when Claude finishes |
 
 Each event plays a random sound from enabled sources, mapped via `source.json`.
@@ -43,6 +46,7 @@ claude-sounds enable <source>        # enable a source
 claude-sounds disable <source>       # disable a source
 claude-sounds enable all             # enable all sources
 claude-sounds list                   # list sources and status
+claude-sounds sounds <source>        # show sounds for a source
 claude-sounds update                 # pull latest sounds from repo
 claude-sounds uninstall              # remove claude-sounds
 ```
