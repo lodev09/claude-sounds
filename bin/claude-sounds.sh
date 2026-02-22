@@ -260,14 +260,17 @@ cmd_sounds() {
     exit 1
   fi
 
-  printf "${BOLD}%s${RESET}\n" "$name"
   python3 -c "
 import json
 with open('$source_json') as f:
     data = json.load(f)
-for event, files in data.items():
-    names = ', '.join('\"' + f.rsplit('.', 1)[0] + '\"' for f in files)
-    print(f'  \033[2m{event}\033[0m  {names}')
+events = list(data.items())
+for idx, (event, files) in enumerate(events):
+    if idx > 0:
+        print()
+    print(f'\033[32m{event}:\033[0m')
+    for name in files:
+        print(f'\033[2m{name.rsplit(chr(46), 1)[0]}\033[0m')
 "
 }
 
