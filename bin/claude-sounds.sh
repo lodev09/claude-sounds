@@ -288,6 +288,18 @@ cmd_list() {
   done
 }
 
+cmd_status() {
+  local enabled available remote
+  enabled=$(get_enabled | tr '\n' ' ' | sed 's/ $//')
+  available=$(get_available | wc -l | tr -d ' ')
+  remote=$(git -C "$SOURCE" remote get-url origin 2>/dev/null || echo "-")
+
+  printf "${DIM}source${RESET}    %s\n" "$SOURCE"
+  printf "${DIM}remote${RESET}    %s\n" "$remote"
+  printf "${DIM}enabled${RESET}   %s\n" "${enabled:-none}"
+  printf "${DIM}available${RESET} %s\n" "$available"
+}
+
 cmd_help() {
   printf "Usage: ${DIM}claude-sounds${RESET} [command]\n"
   echo ""
@@ -296,6 +308,7 @@ cmd_help() {
   echo "  sounds [source]            List sources or show sounds for a source"
   echo "  enable <source|all>        Enable a sound source"
   echo "  disable <source|all>       Disable a sound source"
+  echo "  status                     Show install info"
   echo "  update                     Pull latest sounds from repo"
   echo "  uninstall                  Uninstall claude-sounds"
   echo "  --help                     Show this help"
@@ -308,6 +321,7 @@ case "${1:-select}" in
   list|sounds) cmd_sounds "${2:-}" ;;
   enable)    cmd_enable "${2:-}" ;;
   disable)   cmd_disable "${2:-}" ;;
+  status)    cmd_status ;;
   --help)    cmd_help ;;
   update)    cmd_update ;;
   uninstall) cmd_uninstall ;;
