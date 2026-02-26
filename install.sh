@@ -45,12 +45,12 @@ install_files() {
 install_hooks() {
   HOOKS_JSON=$(cat <<'HOOKS'
 {
-  "SessionStart": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh ready", "async": true}]}],
-  "Stop": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh done", "async": true}]}],
-  "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh work", "async": true}]}],
-  "SubagentStart": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh work", "async": true}]}],
-  "PreToolUse": [{"matcher": "EnterPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh work", "async": true}]}],
-  "PostToolUse": [{"matcher": "ExitPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/play.sh done", "async": true}]}]
+  "SessionStart": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play ready", "async": true}]}],
+  "Stop": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play done", "async": true}]}],
+  "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
+  "SubagentStart": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
+  "PreToolUse": [{"matcher": "EnterPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
+  "PostToolUse": [{"matcher": "ExitPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play done", "async": true}]}]
 }
 HOOKS
 )
@@ -61,7 +61,7 @@ HOOKS
     python3 -c "
 import json, sys
 
-SOUNDS_PREFIX = '~/.claude/sounds/play.sh'
+SOUNDS_PREFIX = '~/.claude/sounds/'
 
 with open('$SETTINGS') as f:
     settings = json.load(f)

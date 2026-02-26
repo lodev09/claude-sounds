@@ -8,6 +8,7 @@ VOLUME_FILE="$DEST/.volume"
 SETTINGS="$HOME/.claude/settings.json"
 
 DEFAULT_VOLUME="0.25"
+EVENTS="ready work done"
 
 source "$(dirname "${BASH_SOURCE[0]}")/spin.sh"
 
@@ -298,6 +299,23 @@ cmd_list() {
   done
 }
 
+cmd_play() {
+  local event="$1"
+  if [ -z "$event" ]; then
+    err "Usage: claude-sounds play <event>"
+    dim "Events: $EVENTS"
+    exit 1
+  fi
+
+  if ! echo "$EVENTS" | grep -qw "$event"; then
+    err "Unknown event: $event"
+    dim "Events: $EVENTS"
+    exit 1
+  fi
+
+  bash "$DEST/play.sh" "$event"
+}
+
 cmd_volume() {
   local vol="$1"
   if [ -z "$vol" ]; then
@@ -338,6 +356,7 @@ cmd_help() {
   echo "  sounds [source]            List sources or show sounds for a source"
   echo "  enable <source|all>        Enable a sound source"
   echo "  disable <source|all>       Disable a sound source"
+  echo "  play <event>               Play a sound event"
   echo "  volume [0-1]               Get or set volume"
   echo "  status                     Show install info"
   echo "  update                     Pull latest sounds from repo"
@@ -352,6 +371,7 @@ case "${1:-select}" in
   list|sounds) cmd_sounds "${2:-}" ;;
   enable)    cmd_enable "${2:-}" ;;
   disable)   cmd_disable "${2:-}" ;;
+  play)      cmd_play "${2:-}" ;;
   volume)    cmd_volume "${2:-}" ;;
   status)    cmd_status ;;
   --help)    cmd_help ;;

@@ -45,6 +45,7 @@ claude-sounds                    Interactive source select
 claude-sounds sounds [source]    List sources or show sounds for a source
 claude-sounds enable <source|all>
 claude-sounds disable <source|all>
+claude-sounds play <event>       Play a sound (ready, work, done)
 claude-sounds volume [0-1]       Get or set volume
 claude-sounds status             Show install info
 claude-sounds update             Pull latest from repo
