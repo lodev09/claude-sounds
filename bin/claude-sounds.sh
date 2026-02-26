@@ -4,7 +4,10 @@ set -e
 DEST="$HOME/.claude/sounds"
 SOURCE_FILE="$DEST/.source"
 ENABLED_FILE="$DEST/.enabled"
+VOLUME_FILE="$DEST/.volume"
 SETTINGS="$HOME/.claude/settings.json"
+
+DEFAULT_VOLUME="0.25"
 
 source "$(dirname "${BASH_SOURCE[0]}")/spin.sh"
 
@@ -295,16 +298,36 @@ cmd_list() {
   done
 }
 
+cmd_volume() {
+  local vol="$1"
+  if [ -z "$vol" ]; then
+    local current
+    current=$([ -f "$VOLUME_FILE" ] && cat "$VOLUME_FILE" || echo "$DEFAULT_VOLUME")
+    echo "$current"
+    return
+  fi
+
+  if ! printf '%s' "$vol" | grep -qE '^(0(\.[0-9]+)?|1(\.0+)?)$'; then
+    err "Volume must be a number between 0.0 and 1.0"
+    exit 1
+  fi
+
+  echo "$vol" > "$VOLUME_FILE"
+  info "Volume set to $vol"
+}
+
 cmd_status() {
-  local enabled available remote
+  local enabled available remote volume
   enabled=$(get_enabled | tr '\n' ' ' | sed 's/ $//')
   available=$(get_available | wc -l | tr -d ' ')
   remote=$(git -C "$SOURCE" remote get-url origin 2>/dev/null || echo "-")
+  volume=$([ -f "$VOLUME_FILE" ] && cat "$VOLUME_FILE" || echo "$DEFAULT_VOLUME")
 
   printf "${DIM}source${RESET}    %s\n" "$SOURCE"
   printf "${DIM}remote${RESET}    %s\n" "$remote"
   printf "${DIM}enabled${RESET}   %s\n" "${enabled:-none}"
   printf "${DIM}available${RESET} %s\n" "$available"
+  printf "${DIM}volume${RESET}    %s\n" "$volume"
 }
 
 cmd_help() {
@@ -315,6 +338,7 @@ cmd_help() {
   echo "  sounds [source]            List sources or show sounds for a source"
   echo "  enable <source|all>        Enable a sound source"
   echo "  disable <source|all>       Disable a sound source"
+  echo "  volume [0-1]               Get or set volume"
   echo "  status                     Show install info"
   echo "  update                     Pull latest sounds from repo"
   echo "  uninstall                  Uninstall claude-sounds"
@@ -328,6 +352,7 @@ case "${1:-select}" in
   list|sounds) cmd_sounds "${2:-}" ;;
   enable)    cmd_enable "${2:-}" ;;
   disable)   cmd_disable "${2:-}" ;;
+  volume)    cmd_volume "${2:-}" ;;
   status)    cmd_status ;;
   --help)    cmd_help ;;
   update)    cmd_update ;;

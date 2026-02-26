@@ -40,16 +40,15 @@ This adds hooks to `~/.claude/settings.json` and installs the `claude-sounds` CL
 
 ## Usage
 
-```sh
-claude-sounds                        # interactively toggle sources
-claude-sounds enable <source>        # enable a source
-claude-sounds disable <source>       # disable a source
-claude-sounds enable all             # enable all sources
-claude-sounds sounds                 # list sources and status
-claude-sounds sounds <source>        # show sounds for a source
-claude-sounds status                 # show install info
-claude-sounds update                 # pull latest sounds from repo
-claude-sounds uninstall              # remove claude-sounds
+```
+claude-sounds                    Interactive source select
+claude-sounds sounds [source]    List sources or show sounds for a source
+claude-sounds enable <source|all>
+claude-sounds disable <source|all>
+claude-sounds volume [0-1]       Get or set volume
+claude-sounds status             Show install info
+claude-sounds update             Pull latest from repo
+claude-sounds uninstall
 ```
 
 ## Customization
