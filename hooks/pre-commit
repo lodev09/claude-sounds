@@ -5,7 +5,7 @@
 # Rejects staged files whose names contain characters that are invalid or
 # problematic on Windows, macOS, or common shell tooling:
 #
-#   ? * : < > | , " \ (and control characters)
+#   ? * : < > | , " \
 #
 # Allowed characters: alphanumerics, spaces, hyphens (-), dots (.), underscores (_),
 # single quotes ('), and forward slashes (/) for path separators.
@@ -17,13 +17,15 @@
 
 # Pattern matches any character that is NOT allowed.
 # Allowed: a-z A-Z 0-9 space - . _ ' /
-FORBIDDEN_PATTERN='[?*:<>|,\"\\]'
+FORBIDDEN_PATTERN='[?*:<>|,"\\]'
 
 status=0
 
 while IFS= read -r -d '' file; do
-  # Check just the filename (basename), not directory components
-  name="$(basename "$file")"
+  # Check just the filename, not directory components.
+  # Use parameter expansion with / as separator instead of basename,
+  # because basename treats \ as a path separator on some platforms.
+  name="${file##*/}"
 
   if echo "$name" | grep -qE "$FORBIDDEN_PATTERN"; then
     if [ "$status" -eq 0 ]; then
