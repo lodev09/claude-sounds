@@ -73,6 +73,25 @@ sounds/my-source/
 
 Then re-run `./install.sh`.
 
+## Contributing
+
+### Pre-commit Hook
+
+A pre-commit hook is included to catch filenames with cross-platform incompatible characters before they are committed. To install it:
+
+```sh
+cp hooks/pre-commit .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+The hook rejects filenames containing `? * : < > | , " \` or other characters that cause issues on Windows or in shell scripts.
+
+### Filename Guidelines
+
+Sound filenames should only contain:
+- Alphanumeric characters (a-z, A-Z, 0-9)
+- Spaces, hyphens (`-`), dots (`.`), underscores (`_`), and single quotes (`'`)
+
 ## Requirements
 
 - macOS (`afplay`)

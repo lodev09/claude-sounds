@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Pre-commit hook: validate cross-platform filename compatibility
+#
+# Rejects staged files whose names contain characters that are invalid or
+# problematic on Windows, macOS, or common shell tooling:
+#
+#   ? * : < > | , " \ (and control characters)
+#
+# Allowed characters: alphanumerics, spaces, hyphens (-), dots (.), underscores (_),
+# single quotes ('), and forward slashes (/) for path separators.
+#
+# Install:
+#   cp hooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+
+# Pattern matches any character that is NOT allowed.
+# Allowed: a-z A-Z 0-9 space - . _ ' /
+FORBIDDEN_PATTERN='[?*:<>|,\"\\]'
+
+status=0
+
+while IFS= read -r -d '' file; do
+  # Check just the filename (basename), not directory components
+  name="$(basename "$file")"
+
+  if echo "$name" | grep -qE "$FORBIDDEN_PATTERN"; then
+    if [ "$status" -eq 0 ]; then
+      echo "ERROR: Cross-platform incompatible filenames detected:"
+      echo ""
+    fi
+    echo "  $file"
+    status=1
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACR -z)
+
+if [ "$status" -ne 0 ]; then
+  echo ""
+  echo "Filenames must only contain: alphanumerics, spaces, hyphens, dots,"
+  echo "underscores, and single quotes."
+  echo ""
+  echo "Rename the file(s) above and try again."
+  exit 1
+fi
+
+exit 0
