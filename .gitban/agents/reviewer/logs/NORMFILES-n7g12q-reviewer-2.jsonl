@@ -1,0 +1,10 @@
+{"timestamp":"2026-03-13T19:44:57Z","operation":"init","role":"reviewer","sprint":"NORMFILES","card_id":"n7g12q","cycle":2}
+{"timestamp":"2026-03-13T19:46:09Z","operation":"init","role":"reviewer","sprint":"NORMFILES","card_id":"n7g12q","cycle":2}
+{"timestamp":"2026-03-13T19:46:09Z","operation":"event","label":"read-diff","metadata":{"commit":"233feba"}}
+{"timestamp":"2026-03-13T19:46:09Z","operation":"event","label":"read-diff","metadata":{"commit":"5ecab16"}}
+{"timestamp":"2026-03-13T19:46:09Z","operation":"event","label":"read-diff","metadata":{"commit":"4599295"}}
+{"timestamp":"2026-03-13T19:46:09Z","operation":"event","label":"read-card","metadata":{"card_id":"n7g12q"}}
+{"timestamp":"2026-03-13T19:47:20Z","operation":"init","role":"reviewer","sprint":"NORMFILES","card_id":"n7g12q","cycle":2}
+{"timestamp":"2026-03-13T19:47:20Z","operation":"event","label":"write-review","metadata":{"verdict":"APPROVAL"}}
+{"timestamp":"2026-03-13T19:47:20Z","operation":"event","label":"card-status-change","metadata":{"new_status":"in_progress"}}
+{"timestamp":"2026-03-13T19:47:20Z","operation":"summary","total_commands":0,"failed_commands":0,"total_duration_s":0}
