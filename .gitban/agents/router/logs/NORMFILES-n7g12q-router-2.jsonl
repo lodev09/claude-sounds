@@ -1,0 +1,7 @@
+{"timestamp":"2026-03-13T19:48:10Z","operation":"init","role":"router","sprint":"NORMFILES","card_id":"n7g12q","cycle":2}
+{"timestamp":"2026-03-13T19:51:31Z","operation":"init","role":"router","sprint":"NORMFILES","card_id":"n7g12q","cycle":2}
+{"timestamp":"2026-03-13T19:51:32Z","operation":"event","label":"read-review","metadata":{"file":".gitban/agents/reviewer/inbox/NORMFILES-n7g12q-reviewer-2.md","verdict":"APPROVAL"}}
+{"timestamp":"2026-03-13T19:51:32Z","operation":"event","label":"write-executor-inbox","metadata":{"file":".gitban/agents/executor/inbox/NORMFILES-n7g12q-executor-2.md"}}
+{"timestamp":"2026-03-13T19:51:32Z","operation":"event","label":"write-planner-inbox","metadata":{"file":".gitban/agents/planner/inbox/NORMFILES-n7g12q-planner-2.md"}}
+{"timestamp":"2026-03-13T19:51:32Z","operation":"event","label":"card-update","metadata":{"action":"append"}}
+{"timestamp":"2026-03-13T19:51:32Z","operation":"summary","total_commands":0,"failed_commands":0,"total_duration_s":1}
