@@ -1,0 +1,38 @@
+schema_version: "1.0.0"
+document_version: "0.1.0"
+last_updated: "2026-03-13"
+
+metadata:
+  maintained_by: "Your Team"
+  review_frequency: "Monthly"
+  related_docs:
+    - "docs/README.md"
+  tools:
+    roadmap_tracking: "roadmap.yaml"
+    task_tracking: "gitban cards"
+    Gitban_mcp: "https://github.com/muunkky/gitban-mcp"
+
+changelog:
+  - version: "0.1.0"
+    date: "2026-03-13"
+    changes:
+      - "Initial roadmap structure created"
+
+versions:
+  v1:
+    id: "v1"
+    title: "Version 1.0"
+    description: "Initial release"
+    status: "todo"
+    start_date: "2026-03-13"
+    target_completion: "2026-01-31"
+    milestones:
+      m1:
+        id: "m1"
+        title: "M1: First Milestone"
+        description: "Complete initial features"
+        status: "todo"
+        success_criteria:
+          - "Core features implemented"
+          - "Documentation complete"
+        features: {}
