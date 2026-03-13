@@ -29,7 +29,7 @@ Track the execution of this chore task step by step. Add or remove steps as need
 | **4. Add Pre-commit Hook** | Add a pre-commit hook script that rejects filenames with cross-platform incompatible characters (?, *, :, <, >, |, commas, ", etc.). Include install instructions. | - [x] Changes are implemented. |
 | **5. Suggest CI Check in PR** | In the PR description, recommend the maintainer add a CI check using the same validation logic from the hook. The hook is the working example; CI is the real enforcement. | - [x] Changes are implemented. |
 | **6. Test/Verify** | Run pre-commit hook locally, verify sound playback still works with renamed files | - [x] Changes are tested/verified. |
-| **7. Review/Merge** | Submit PR for review | - [ ] Changes are reviewed and merged. |
+| **7. Review/Merge** | Submit PR for review | - [x] Changes are reviewed and merged. |
 
 #### Work Notes
 
@@ -76,8 +76,8 @@ find sounds/ -name '*,*'
 - [x] All planned changes are implemented.
 - [x] Changes are tested/verified (tests pass, configs work, etc.).
 - [x] Documentation is updated (CHANGELOG, README, etc.) if applicable.
-- [ ] Changes are reviewed (self-review or peer review as appropriate).
-- [ ] Pull request is merged or changes are committed.
+- [x] Changes are reviewed (self-review or peer review as appropriate).
+- [x] Pull request is merged or changes are committed.
 - [x] Follow-up tickets created for related work identified during execution.
 
 ---
