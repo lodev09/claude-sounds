@@ -1,0 +1,6 @@
+{"timestamp":"2026-03-13T19:29:43Z","operation":"init","role":"reviewer","sprint":"NORMFILES","card_id":"n7g12q","cycle":1}
+{"timestamp":"2026-03-13T19:30:00Z","operation":"event","event":"read-diff","data":{"commit":"4599295"}}
+{"timestamp":"2026-03-13T19:30:01Z","operation":"event","event":"read-card","data":{"card_id":"n7g12q"}}
+{"timestamp":"2026-03-13T19:30:02Z","operation":"event","event":"write-review","data":{"verdict":"REJECTION"}}
+{"timestamp":"2026-03-13T19:30:03Z","operation":"event","event":"card-status-change","data":{"new_status":"blocked"}}
+{"timestamp":"2026-03-13T19:30:04Z","operation":"summary","role":"reviewer","sprint":"NORMFILES","card_id":"n7g12q","cycle":1,"verdict":"REJECTION","blockers":2,"backlog_items":3}
