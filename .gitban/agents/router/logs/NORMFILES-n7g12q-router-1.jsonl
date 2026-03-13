@@ -1,0 +1,5 @@
+{"timestamp":"2026-03-13T19:33:24Z","operation":"init","role":"router","sprint":"NORMFILES","card_id":"n7g12q","cycle":1}
+{"timestamp":"2026-03-13T19:34:52Z","operation":"event","label":"read-review","metadata":{"file":"NORMFILES-n7g12q-reviewer-1.md","verdict":"REJECTION"}}
+{"timestamp":"2026-03-13T19:34:52Z","operation":"event","label":"write-executor-inbox","metadata":{"file":"NORMFILES-n7g12q-executor-1.md"}}
+{"timestamp":"2026-03-13T19:34:52Z","operation":"event","label":"card-update","metadata":{"action":"append"}}
+{"timestamp":"2026-03-13T19:34:52Z","operation":"summary","total_commands":0,"failed_commands":0,"total_duration_s":0}

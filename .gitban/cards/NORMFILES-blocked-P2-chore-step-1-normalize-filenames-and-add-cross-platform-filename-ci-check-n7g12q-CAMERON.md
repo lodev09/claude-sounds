@@ -88,3 +88,8 @@ __This gitban card is a structured document that enforces the company best pract
 
 ## BLOCKED
 Review 1 REJECTION: source.json references non-existent .wav files (renames not present locally), and pre-commit hook lacks tests. See NORMFILES-n7g12q-reviewer-1.md for full review.
+
+
+## Review Log
+
+| Review 1 | REJECTION | `.gitban/agents/reviewer/inbox/NORMFILES-n7g12q-reviewer-1.md` | 2 blockers (source.json refs non-existent files, no hook tests), 3 backlog items routed as close-out items to executor |
