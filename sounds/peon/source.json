@@ -1,8 +1,8 @@
 {
   "ready": [
-    "yes?.wav",
+    "yes.wav",
     "ready to work.wav",
-    "what you want?.wav"
+    "what you want.wav"
   ],
   "work": [
     "work work.wav",

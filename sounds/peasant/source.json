@@ -1,7 +1,7 @@
 {
   "ready": [
     "ready to work.wav",
-    "yes, milord?.wav"
+    "yes milord.wav"
   ],
   "work": [
     "alright.wav",
@@ -9,6 +9,6 @@
   ],
   "done": [
     "right o.wav",
-    "more work?.wav"
+    "more work.wav"
   ]
 }
