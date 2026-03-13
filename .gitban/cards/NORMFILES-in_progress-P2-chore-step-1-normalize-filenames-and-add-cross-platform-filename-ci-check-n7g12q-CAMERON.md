@@ -74,7 +74,7 @@ find sounds/ -name '*,*'
 ### Completion Checklist
 
 - [x] All planned changes are implemented.
-- [ ] Changes are tested/verified (tests pass, configs work, etc.).
+- [x] Changes are tested/verified (tests pass, configs work, etc.).
 - [x] Documentation is updated (CHANGELOG, README, etc.) if applicable.
 - [ ] Changes are reviewed (self-review or peer review as appropriate).
 - [ ] Pull request is merged or changes are committed.
