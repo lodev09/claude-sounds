@@ -8,7 +8,7 @@ VOLUME_FILE="$DEST/.volume"
 SETTINGS="$HOME/.claude/settings.json"
 
 DEFAULT_VOLUME="0.25"
-EVENTS="ready work done"
+EVENTS="ready work done ask"
 
 source "$(dirname "${BASH_SOURCE[0]}")/spin.sh"
 

@@ -49,7 +49,12 @@ install_hooks() {
   "Stop": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play done", "async": true}]}],
   "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
   "SubagentStart": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
-  "PreToolUse": [{"matcher": "EnterPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
+  "PreToolUse": [
+    {"matcher": "EnterPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]},
+    {"matcher": "Bash", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play ask", "async": true}]},
+    {"matcher": "Edit", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play ask", "async": true}]},
+    {"matcher": "Write", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play ask", "async": true}]}
+  ],
   "PostToolUse": [{"matcher": "ExitPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play done", "async": true}]}]
 }
 HOOKS
@@ -110,6 +115,9 @@ printf " SubagentStart    ${DIM}→${RESET} work\n"
 printf " EnterPlanMode    ${DIM}→${RESET} work\n"
 printf " ExitPlanMode     ${DIM}→${RESET} done\n"
 printf " Stop             ${DIM}→${RESET} done\n"
+printf " Bash             ${DIM}→${RESET} ask\n"
+printf " Edit             ${DIM}→${RESET} ask\n"
+printf " Write            ${DIM}→${RESET} ask\n"
 printf "\n${DIM}To uninstall: claude-sounds uninstall${RESET}\n\n"
 
 bash "$DEST/claude-sounds.sh" select

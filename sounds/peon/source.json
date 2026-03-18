@@ -12,5 +12,9 @@
   "done": [
     "okay.wav",
     "ready to work.wav"
+  ],
+  "ask": [
+    "what you want?.wav",
+    "yes?.wav"
   ]
 }
