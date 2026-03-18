@@ -107,12 +107,12 @@ spin "Installing sounds" install_files
 spin "Configuring hooks" install_hooks
 
 printf "\n${DIM}Hooks:${RESET}\n"
-printf " SessionStart     ${DIM}→${RESET} ready\n"
-printf " UserPromptSubmit ${DIM}→${RESET} work\n"
-printf " SubagentStart    ${DIM}→${RESET} work\n"
-printf " EnterPlanMode    ${DIM}→${RESET} work\n"
-printf " ExitPlanMode     ${DIM}→${RESET} done\n"
-printf " Stop             ${DIM}→${RESET} done\n"
+printf " SessionStart      ${DIM}→${RESET} ready\n"
+printf " UserPromptSubmit  ${DIM}→${RESET} work\n"
+printf " SubagentStart     ${DIM}→${RESET} work\n"
+printf " EnterPlanMode     ${DIM}→${RESET} work\n"
+printf " ExitPlanMode      ${DIM}→${RESET} done\n"
+printf " Stop              ${DIM}→${RESET} done\n"
 printf " PermissionRequest ${DIM}→${RESET} ask\n"
 printf "\n${DIM}To uninstall: claude-sounds uninstall${RESET}\n\n"
 
