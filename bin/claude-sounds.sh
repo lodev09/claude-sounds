@@ -8,7 +8,7 @@ VOLUME_FILE="$DEST/.volume"
 SETTINGS="$HOME/.claude/settings.json"
 
 DEFAULT_VOLUME="0.25"
-EVENTS="ready work done"
+EVENTS="ready work done ask"
 
 source "$(dirname "${BASH_SOURCE[0]}")/spin.sh"
 
@@ -33,7 +33,7 @@ with open('$SETTINGS') as f:
     settings = json.load(f)
 
 hooks = settings.get('hooks', {})
-for event in ['SessionStart', 'Stop', 'UserPromptSubmit', 'SubagentStart', 'PreToolUse', 'PostToolUse']:
+for event in ['SessionStart', 'Stop', 'UserPromptSubmit', 'SubagentStart', 'PreToolUse', 'PostToolUse', 'PermissionRequest']:
     entries = hooks.get(event, [])
     hooks[event] = [e for e in entries if not any(
         h.get('command', '').startswith('~/.claude/sounds/')

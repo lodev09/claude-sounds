@@ -49,7 +49,10 @@ install_hooks() {
   "Stop": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play done", "async": true}]}],
   "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
   "SubagentStart": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
-  "PreToolUse": [{"matcher": "EnterPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}],
+  "PreToolUse": [
+    {"matcher": "EnterPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play work", "async": true}]}
+  ],
+  "PermissionRequest": [{"hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play ask", "async": true}]}],
   "PostToolUse": [{"matcher": "ExitPlanMode", "hooks": [{"type": "command", "command": "~/.claude/sounds/claude-sounds.sh play done", "async": true}]}]
 }
 HOOKS
@@ -104,12 +107,13 @@ spin "Installing sounds" install_files
 spin "Configuring hooks" install_hooks
 
 printf "\n${DIM}Hooks:${RESET}\n"
-printf " SessionStart     ${DIM}→${RESET} ready\n"
-printf " UserPromptSubmit ${DIM}→${RESET} work\n"
-printf " SubagentStart    ${DIM}→${RESET} work\n"
-printf " EnterPlanMode    ${DIM}→${RESET} work\n"
-printf " ExitPlanMode     ${DIM}→${RESET} done\n"
-printf " Stop             ${DIM}→${RESET} done\n"
+printf " SessionStart      ${DIM}→${RESET} ready\n"
+printf " UserPromptSubmit  ${DIM}→${RESET} work\n"
+printf " SubagentStart     ${DIM}→${RESET} work\n"
+printf " EnterPlanMode     ${DIM}→${RESET} work\n"
+printf " ExitPlanMode      ${DIM}→${RESET} done\n"
+printf " Stop              ${DIM}→${RESET} done\n"
+printf " PermissionRequest ${DIM}→${RESET} ask\n"
 printf "\n${DIM}To uninstall: claude-sounds uninstall${RESET}\n\n"
 
 bash "$DEST/claude-sounds.sh" select
