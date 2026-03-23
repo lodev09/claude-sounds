@@ -299,6 +299,24 @@ cmd_list() {
   done
 }
 
+cmd_on() {
+  if [ ! -f "$DEST/.muted" ]; then
+    dim "Sounds already on"
+    return
+  fi
+  rm -f "$DEST/.muted"
+  info "Sounds on"
+}
+
+cmd_off() {
+  if [ -f "$DEST/.muted" ]; then
+    dim "Sounds already off"
+    return
+  fi
+  touch "$DEST/.muted"
+  info "Sounds off"
+}
+
 cmd_play() {
   local event="$1"
   if [ -z "$event" ]; then
@@ -335,14 +353,16 @@ cmd_volume() {
 }
 
 cmd_status() {
-  local enabled available remote volume
+  local enabled available remote volume muted
   enabled=$(get_enabled | tr '\n' ' ' | sed 's/ $//')
   available=$(get_available | wc -l | tr -d ' ')
   remote=$(git -C "$SOURCE" remote get-url origin 2>/dev/null || echo "-")
   volume=$([ -f "$VOLUME_FILE" ] && cat "$VOLUME_FILE" || echo "$DEFAULT_VOLUME")
+  muted=$([ -f "$DEST/.muted" ] && echo "yes" || echo "no")
 
   printf "${DIM}source${RESET}    %s\n" "$SOURCE"
   printf "${DIM}remote${RESET}    %s\n" "$remote"
+  printf "${DIM}sounds${RESET}    %s\n" "$([ "$muted" = "yes" ] && echo "off" || echo "on")"
   printf "${DIM}enabled${RESET}   %s\n" "${enabled:-none}"
   printf "${DIM}available${RESET} %s\n" "$available"
   printf "${DIM}volume${RESET}    %s\n" "$volume"
@@ -356,6 +376,8 @@ cmd_help() {
   echo "  sounds [source]            List sources or show sounds for a source"
   echo "  enable <source|all>        Enable a sound source"
   echo "  disable <source|all>       Disable a sound source"
+  echo "  on                         Turn sounds on"
+  echo "  off                        Turn sounds off"
   echo "  play <event>               Play a sound event"
   echo "  volume [0-1]               Get or set volume"
   echo "  status                     Show install info"
@@ -371,6 +393,8 @@ case "${1:-select}" in
   list|sounds) cmd_sounds "${2:-}" ;;
   enable)    cmd_enable "${2:-}" ;;
   disable)   cmd_disable "${2:-}" ;;
+  on)        cmd_on ;;
+  off)       cmd_off ;;
   play)      cmd_play "${2:-}" ;;
   volume)    cmd_volume "${2:-}" ;;
   status)    cmd_status ;;

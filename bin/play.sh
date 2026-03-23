@@ -3,6 +3,7 @@ DEST="$HOME/.claude/sounds"
 EVENT="$1"
 
 [ -z "$EVENT" ] && exit 0
+[ -f "$DEST/.muted" ] && exit 0
 [ ! -f "$DEST/.enabled" ] && exit 0
 [ ! -f "$DEST/.source" ] && exit 0
 
