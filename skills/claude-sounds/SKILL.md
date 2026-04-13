@@ -1,4 +1,5 @@
 ---
+name: claude-sounds
 description: Manage sound packs, volume, and audio feedback settings
 user_invocable: true
 ---
