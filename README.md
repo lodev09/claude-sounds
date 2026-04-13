@@ -12,7 +12,7 @@ claude plugin install sounds@lodev09
 For CLI access, also install via npm:
 
 ```sh
-npm install -g claude-sounds
+npm install -g @lodev09/claude-sounds
 ```
 
 ## Hook Events
