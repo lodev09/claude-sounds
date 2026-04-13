@@ -14,13 +14,13 @@ The tool handles sound pack management, volume control, and event-based audio fe
 
 ## Key Commands
 
-Users can invoke several operations:
-- View active settings with `/sounds status`
-- Modify volume using `/sounds volume <0.0-1.0>`
-- Enable or disable sound packs via `/sounds enable <source|all>` or `/sounds disable <source|all>`
-- Turn sounds on or off with `/sounds on` or `/sounds off`
-- List available packs with `/sounds list`
-- Play a test sound with `/sounds play <event>`
+- `/sounds` — Interactive source select
+- `/sounds sounds [source]` — List sources or show sounds for a source
+- `/sounds enable <source|all>` / `/sounds disable <source|all>`
+- `/sounds on` / `/sounds off`
+- `/sounds play <event>` — Play a test sound
+- `/sounds volume <0.0-1.0>`
+- `/sounds status`
 
 ## Technical Details
 
