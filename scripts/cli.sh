@@ -2,7 +2,7 @@
 # CLI wrapper — delegates to the marketplace-installed plugin
 set -e
 
-PLUGIN_DIR="$HOME/.claude/plugins/cache/lodev09/claude-sounds"
+PLUGIN_DIR="$HOME/.claude/plugins/cache/lodev09/sounds"
 
 if [ ! -d "$PLUGIN_DIR" ]; then
   echo "claude-sounds plugin not installed." >&2

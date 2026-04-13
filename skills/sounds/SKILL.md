@@ -13,7 +13,7 @@ When this skill is invoked, run the CLI script and display its output. Do NOT in
 Resolve the plugin root first (use the latest installed version):
 
 ```
-ROOT=$(ls -d "$HOME/.claude/plugins/cache/lodev09/claude-sounds"/*/ 2>/dev/null | sort -V | tail -1)
+ROOT=$(ls -d "$HOME/.claude/plugins/cache/lodev09/sounds"/*/ 2>/dev/null | sort -V | tail -1)
 ```
 
 Then pass user arguments directly to the script:
