@@ -5,7 +5,8 @@ Sound feedback plugin for [Claude Code](https://docs.anthropic.com/en/docs/claud
 ## Install
 
 ```sh
-claude plugin add lodev09/claude-sounds
+claude plugin marketplace add lodev09/claude-plugins
+claude plugin install claude-sounds@lodev09
 ```
 
 For CLI access, also install via npm:
