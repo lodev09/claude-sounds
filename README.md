@@ -6,7 +6,7 @@ Sound feedback plugin for [Claude Code](https://docs.anthropic.com/en/docs/claud
 
 ```sh
 claude plugin marketplace add lodev09/claude-plugins
-claude plugin install claude-sounds@lodev09
+claude plugin install sounds@lodev09
 ```
 
 For CLI access, also install via npm:
@@ -38,18 +38,18 @@ Each event plays a random sound from enabled sources, mapped via `source.json`.
 
 ## Usage
 
-Use the `/claude-sounds` slash command inside Claude Code, or run the CLI directly:
+Use the `/sounds` slash command inside Claude Code, or run the CLI directly:
 
 ```
-claude-sounds                    Interactive source select
-claude-sounds sounds [source]    List sources or show sounds for a source
-claude-sounds enable <source|all>
-claude-sounds disable <source|all>
-claude-sounds on                 Turn sounds on
-claude-sounds off                Turn sounds off
-claude-sounds play <event>       Play a sound (ready, work, done, ask)
-claude-sounds volume [0-1]       Get or set volume
-claude-sounds status             Show install info
+/sounds                    Interactive source select
+/sounds sounds [source]    List sources or show sounds for a source
+/sounds enable <source|all>
+/sounds disable <source|all>
+/sounds on                 Turn sounds on
+/sounds off                Turn sounds off
+/sounds play <event>       Play a sound (ready, work, done, ask)
+/sounds volume [0-1]       Get or set volume
+/sounds status             Show install info
 ```
 
 ## Customization
