@@ -1,41 +1,26 @@
 ---
 name: sounds
-description: Manage sound packs, volume, and audio feedback settings
+description: Manage Claude Code sound feedback — select, enable/disable sound packs, adjust volume, mute/unmute, play test sounds, and view status. Supports packs like Warcraft Peon, Dota 2 Bastion, etc.
 user_invocable: true
 ---
 
-# Sound Manager Skill Overview
+# Instructions
 
-The `/sounds` command manages audio feedback for Claude Code sessions. Here's what this skill provides:
+When this skill is invoked, run the CLI script and display its output. Do NOT interpret, reimplement, or manually execute the commands yourself.
 
-## Core Capabilities
+## How to run
 
-The tool handles sound pack management, volume control, and event-based audio feedback using Warcraft-style voice lines.
+Resolve the plugin root first (use the latest installed version):
 
-## Key Commands
+```
+ROOT=$(ls -d "$HOME/.claude/plugins/cache/lodev09/claude-sounds"/*/ 2>/dev/null | sort -V | tail -1)
+```
 
-- `/sounds` — Interactive source select
-- `/sounds sounds [source]` — List sources or show sounds for a source
-- `/sounds enable <source|all>` / `/sounds disable <source|all>`
-- `/sounds on` / `/sounds off`
-- `/sounds play <event>` — Play a test sound
-- `/sounds volume <0.0-1.0>`
-- `/sounds status`
+Then pass user arguments directly to the script:
 
-## Technical Details
+- `/sounds` → `bash "$ROOT/scripts/claude-sounds.sh"`
+- `/sounds status` → `bash "$ROOT/scripts/claude-sounds.sh" status`
+- `/sounds volume 0.5` → `bash "$ROOT/scripts/claude-sounds.sh" volume 0.5`
+- `/sounds enable peon` → `bash "$ROOT/scripts/claude-sounds.sh" enable peon`
 
-The implementation interacts with a configuration file stored at `$CLAUDE_PLUGIN_ROOT/config.json`. Sound packs are housed in the `$CLAUDE_PLUGIN_ROOT/sounds/` directory. The CLI is accessible at `$CLAUDE_PLUGIN_ROOT/scripts/claude-sounds.sh`.
-
-## Available Sound Packs
-
-- **peon** — Warcraft Orc Peon
-- **bastion** — Dota 2 Bastion Announcer Pack
-- **peasant** — Warcraft Human Peasant
-- **ra2** — Command & Conquer: Red Alert 2
-
-## Sound Events
-
-- `ready` — Session start greeting
-- `work` — Acknowledgment on prompt/task
-- `done` — Task completion
-- `ask` — Permission request
+The script handles ALL logic. Just run it and show the output. Nothing else.
