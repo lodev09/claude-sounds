@@ -6,21 +6,24 @@ user_invocable: true
 
 # Instructions
 
-When this skill is invoked, run the CLI script and display its output. Do NOT interpret, reimplement, or manually execute the commands yourself.
-
-## How to run
-
 Resolve the plugin root first (use the latest installed version):
 
 ```
 ROOT=$(ls -d "$HOME/.claude/plugins/cache/lodev09/sounds"/*/ 2>/dev/null | sort -V | tail -1)
 ```
 
-Then pass user arguments directly to the script:
+## With arguments
 
-- `/sounds` → `bash "$ROOT/scripts/claude-sounds.sh"`
+Pass user arguments directly to the CLI script. Do NOT interpret or reimplement the commands.
+
 - `/sounds status` → `bash "$ROOT/scripts/claude-sounds.sh" status`
 - `/sounds volume 0.5` → `bash "$ROOT/scripts/claude-sounds.sh" volume 0.5`
 - `/sounds enable peon` → `bash "$ROOT/scripts/claude-sounds.sh" enable peon`
 
-The script handles ALL logic. Just run it and show the output. Nothing else.
+## Without arguments (`/sounds`)
+
+The interactive select requires a TTY. Instead, use native Claude user input:
+
+1. Run `bash "$ROOT/scripts/claude-sounds.sh" sounds` to get available packs and their enabled state
+2. Ask the user which packs to enable/disable using a numbered list
+3. Run the corresponding `enable` / `disable` commands based on user selection
