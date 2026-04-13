@@ -1,17 +1,17 @@
 {
   "ready": [
-    "ready to work.wav",
-    "yes, milord?.wav"
+    "ready-to-work.wav",
+    "yes-milord.wav"
   ],
   "work": [
     "alright.wav",
-    "off i go, then.wav"
+    "off-i-go-then.wav"
   ],
   "done": [
-    "right o.wav",
-    "more work?.wav"
+    "right-o.wav",
+    "more-work.wav"
   ],
   "ask": [
-    "yes, milord?.wav"
+    "yes-milord.wav"
   ]
 }
