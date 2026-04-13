@@ -28,7 +28,7 @@
     "url": "https://github.com/lodev09/claude-sounds.git"
   },
   "bin": {
-    "claude-sounds": "./scripts/claude-sounds.sh"
+    "claude-sounds": "./scripts/cli.sh"
   },
   "files": [
     ".claude-plugin/",
