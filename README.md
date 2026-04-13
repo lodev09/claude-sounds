@@ -1,6 +1,20 @@
 # claude-sounds
 
-Sound feedback for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) using [hooks](https://docs.anthropic.com/en/docs/claude-code/hooks). Plays Warcraft-style voice lines when Claude starts, receives a prompt, and finishes a task.
+Sound feedback plugin for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Plays Warcraft-style voice lines when Claude starts, receives a prompt, and finishes a task.
+
+## Install
+
+As a Claude Code plugin:
+
+```sh
+claude plugin add lodev09/claude-sounds
+```
+
+Or from a local directory:
+
+```sh
+claude --plugin-dir /path/to/claude-sounds
+```
 
 ## Hook Events
 
@@ -23,34 +37,20 @@ Each event plays a random sound from enabled sources, mapped via `source.json`.
 - [**bastion**](sounds/bastion/) — Dota 2 Bastion Announcer Pack
 - [**ra2**](sounds/ra2/) — Command & Conquer: Red Alert 2
 
-## Install
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/lodev09/claude-sounds/main/install.sh | bash
-```
-
-Or clone and install locally:
-
-```sh
-git clone https://github.com/lodev09/claude-sounds.git
-cd claude-sounds
-./install.sh
-```
-
-This adds hooks to `~/.claude/settings.json` and installs the `claude-sounds` CLI.
-
 ## Usage
+
+Use the `/claude-sounds` slash command inside Claude Code, or run the CLI directly:
 
 ```
 claude-sounds                    Interactive source select
 claude-sounds sounds [source]    List sources or show sounds for a source
 claude-sounds enable <source|all>
 claude-sounds disable <source|all>
+claude-sounds on                 Turn sounds on
+claude-sounds off                Turn sounds off
 claude-sounds play <event>       Play a sound (ready, work, done, ask)
 claude-sounds volume [0-1]       Get or set volume
 claude-sounds status             Show install info
-claude-sounds update             Pull latest from repo
-claude-sounds uninstall
 ```
 
 ## Customization
@@ -73,12 +73,10 @@ sounds/my-source/
 }
 ```
 
-Then re-run `./install.sh`.
-
 ## Requirements
 
 - macOS (`afplay`)
-- `python3` (for settings.json merging)
+- `python3`
 
 ## Credits
 

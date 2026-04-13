@@ -1,0 +1,12 @@
+{
+  "name": "claude-sounds",
+  "version": "1.0.0",
+  "description": "Sound feedback for Claude Code — plays Warcraft-style voice lines on session events",
+  "author": {
+    "name": "Jovanni Lo",
+    "url": "https://github.com/lodev09"
+  },
+  "homepage": "https://github.com/lodev09/claude-sounds",
+  "repository": "https://github.com/lodev09/claude-sounds",
+  "license": "MIT"
+}

@@ -1,0 +1,42 @@
+#!/bin/bash
+EVENT="$1"
+
+[ -z "$EVENT" ] && exit 0
+
+ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+CONFIG="$ROOT/config.json"
+
+[ ! -f "$CONFIG" ] && exit 0
+
+read -r MUTED VOLUME <<< "$(python3 -c "
+import json
+with open('$CONFIG') as f:
+    c = json.load(f)
+print(c.get('muted', False), c.get('volume', 0.25))
+")"
+
+[ "$MUTED" = "True" ] && exit 0
+
+files=$(python3 -c "
+import json, os
+root = '$ROOT'
+event = '$EVENT'
+with open('$ROOT/config.json') as f:
+    config = json.load(f)
+for pack in config.get('enabled', []):
+    path = os.path.join(root, 'sounds', pack, 'source.json')
+    if not os.path.isfile(path):
+        continue
+    with open(path) as f:
+        data = json.load(f)
+    for name in data.get(event, []):
+        print(os.path.join(root, 'sounds', pack, name))
+")
+
+[ -z "$files" ] && exit 0
+
+existing=()
+while IFS= read -r f; do [[ -f "$f" ]] && existing+=("$f"); done <<< "$files"
+[[ ${#existing[@]} -eq 0 ]] && exit 0
+
+afplay -v "$VOLUME" "${existing[RANDOM % ${#existing[@]}]}" &

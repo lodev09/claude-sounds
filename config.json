@@ -1,0 +1,5 @@
+{
+  "enabled": ["peon", "bastion", "peasant", "ra2"],
+  "volume": 0.25,
+  "muted": false
+}
