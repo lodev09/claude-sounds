@@ -73,8 +73,11 @@ sounds/my-source/
 
 ## Requirements
 
-- macOS (`afplay`)
 - `python3`
+- Audio player (auto-detected):
+  - **macOS** — `afplay` (built-in)
+  - **Linux** — `pw-play`, `paplay`, or `ffplay`
+  - **Windows** — `ffplay` or PowerShell (built-in)
 
 ## Credits
 

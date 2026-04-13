@@ -39,4 +39,37 @@ existing=()
 while IFS= read -r f; do [[ -f "$f" ]] && existing+=("$f"); done <<< "$files"
 [[ ${#existing[@]} -eq 0 ]] && exit 0
 
-afplay -v "$VOLUME" "${existing[RANDOM % ${#existing[@]}]}" &
+SOUND="${existing[RANDOM % ${#existing[@]}]}"
+
+play_sound() {
+  case "$(uname -s)" in
+    Darwin)
+      afplay -v "$VOLUME" "$SOUND" &
+      ;;
+    Linux)
+      if command -v pw-play >/dev/null 2>&1; then
+        pw-play --volume "$VOLUME" "$SOUND" &
+      elif command -v paplay >/dev/null 2>&1; then
+        paplay "$SOUND" &
+      elif command -v ffplay >/dev/null 2>&1; then
+        ffplay -nodisp -autoexit -loglevel quiet -volume "$(python3 -c "print(int($VOLUME * 100))")" "$SOUND" &
+      fi
+      ;;
+    MINGW*|MSYS*|CYGWIN*|Windows_NT)
+      if command -v ffplay >/dev/null 2>&1; then
+        ffplay -nodisp -autoexit -loglevel quiet -volume "$(python3 -c "print(int($VOLUME * 100))")" "$SOUND" &
+      elif command -v powershell.exe >/dev/null 2>&1; then
+        powershell.exe -NoProfile -Command "
+          Add-Type -AssemblyName PresentationCore
+          \$p = New-Object System.Windows.Media.MediaPlayer
+          \$p.Volume = $VOLUME
+          \$p.Open([Uri]::new('$SOUND'))
+          \$p.Play()
+          Start-Sleep -Seconds 5
+        " &
+      fi
+      ;;
+  esac
+}
+
+play_sound
