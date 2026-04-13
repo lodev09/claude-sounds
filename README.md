@@ -4,16 +4,14 @@ Sound feedback plugin for [Claude Code](https://docs.anthropic.com/en/docs/claud
 
 ## Install
 
-As a Claude Code plugin:
-
 ```sh
 claude plugin add lodev09/claude-sounds
 ```
 
-Or from a local directory:
+For CLI access, also install via npm:
 
 ```sh
-claude --plugin-dir /path/to/claude-sounds
+npm install -g claude-sounds
 ```
 
 ## Hook Events

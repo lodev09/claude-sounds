@@ -6,11 +6,29 @@
     "name": "Jovanni Lo",
     "url": "https://github.com/lodev09"
   },
+  "keywords": [
+    "claude-code",
+    "claude-code-plugin",
+    "claude",
+    "anthropic",
+    "sounds",
+    "audio",
+    "hooks",
+    "voice",
+    "warcraft",
+    "dota2",
+    "red-alert",
+    "sound-effects",
+    "cli"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/lodev09/claude-sounds",
   "repository": {
     "type": "git",
     "url": "https://github.com/lodev09/claude-sounds.git"
+  },
+  "bin": {
+    "claude-sounds": "./scripts/claude-sounds.sh"
   },
   "files": [
     ".claude-plugin/",
@@ -21,12 +39,5 @@
     "config.json",
     "LICENSE",
     "README.md"
-  ],
-  "keywords": [
-    "claude-code",
-    "claude-code-plugin",
-    "sounds",
-    "audio",
-    "warcraft"
   ]
 }
